@@ -1,12 +1,15 @@
 {
 	"nodes":[
-		{"id":"9675a46f3489c918","x":-378,"y":-152,"width":250,"height":50,"color":"5","type":"text","text":"Due-Diligence"},
-		{"id":"b3d9b7524825cc97","x":-334,"y":-69,"width":162,"height":50,"color":"3","type":"text","text":"Data Processing"},
-		{"id":"8d5e9124a97cb625","x":-790,"y":-69,"width":150,"height":50,"color":"1","type":"text","text":"API Calls"},
-		{"id":"e09dfab4b45bc6ea","x":249,"y":-69,"width":252,"height":50,"color":"4","type":"text","text":"Spreadsheet Generation"},
-		{"id":"62923def85406843","x":-840,"y":-19,"width":250,"height":131,"color":"2","type":"text","text":"- Python will be used to make API calls\n- Postman will be used to generate/test API calls"},
-		{"id":"d34b7a9085edc80e","x":-378,"y":-19,"width":250,"height":60,"color":"2","type":"text","text":"Pandas will be used to process the data"},
-		{"id":"56b4a6adbcc40401","x":251,"y":-19,"width":250,"height":60,"color":"2","type":"text","text":"[openpyxl](https://realpython.com/openpyxl-excel-spreadsheets-python/)\n"}
+		{"type":"text","text":"Due-Diligence","id":"9675a46f3489c918","x":-378,"y":-152,"width":250,"height":50,"color":"5"},
+		{"type":"text","text":"Data Processing","id":"b3d9b7524825cc97","x":-334,"y":-69,"width":162,"height":50,"color":"3"},
+		{"type":"text","text":"API Calls","id":"8d5e9124a97cb625","x":-790,"y":-69,"width":150,"height":50,"color":"1"},
+		{"type":"text","text":"Spreadsheet Generation","id":"e09dfab4b45bc6ea","x":249,"y":-69,"width":252,"height":50,"color":"4"},
+		{"type":"text","text":"- Python will be used to make API calls\n- Postman will be used to generate/test API calls","id":"62923def85406843","x":-840,"y":-19,"width":250,"height":131,"color":"2"},
+		{"type":"text","text":"Pandas will be used to process the data","id":"d34b7a9085edc80e","x":-378,"y":-19,"width":250,"height":60,"color":"2"},
+		{"type":"text","text":"[openpyxl](https://realpython.com/openpyxl-excel-spreadsheets-python/)\n","id":"56b4a6adbcc40401","x":251,"y":-19,"width":250,"height":60,"color":"2"},
+		{"id":"d836947c92722d9b","x":-840,"y":140,"width":250,"height":57,"type":"text","text":"Class, Name, Due Date"}
 	],
-	"edges":[]
+	"edges":[
+		{"id":"54323450565c79ca","fromNode":"d836947c92722d9b","fromSide":"top","toNode":"62923def85406843","toSide":"bottom"}
+	]
 }
