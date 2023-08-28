@@ -1,4 +1,5 @@
 import json
+import re
 
 import canvasapi.course
 import requests
@@ -14,12 +15,14 @@ API_URL = "https://utsa.instructure.com"
 API_KEY = get_token()
 
 
-def get_courses(user_id: int) -> list[Course]:
+def get_courses(user_id: int = 0) -> list[Course]:
     """
     Entrypoint for api interactions
     :param user_id:
     :return:
     """
+    if user_id == 0:
+        user_id = get_user_id()
     assert user_id > 0, "Invalid user id passed. Use dd.api.main.get_user_id() to retrieve user id"
 
     viable_courses: list[Course] = []
@@ -40,6 +43,8 @@ def get_courses(user_id: int) -> list[Course]:
         if not course_rep:
             continue
         logger.success(f"Found course: {course_rep}")
+
+        course.name = re.sub(r"((\w{1,}[-]){3})\w{1,} \d{4}-", "", course.name, 0)  # Normalize course name
 
         assignment_groups: list[AssignmentGroup] = []
         try:
@@ -104,7 +109,6 @@ def get_user_id() -> int:
 
 
 if __name__ == "__main__":
-    canvas = Canvas(API_URL, API_KEY)
     courses = get_courses(get_user_id())
     for course in courses:
         print(course)

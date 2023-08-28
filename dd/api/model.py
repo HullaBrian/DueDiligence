@@ -30,8 +30,12 @@ class Course:
     assignment_groups: list[AssignmentGroup]
 
     def __str__(self):
-        print(self.code, "|", self.name, "|", self.id)
+        out = ""
+
+        out += self.code + " | " + self.name + " | " + str(self.id) + "\n"
         for assignment_group in self.assignment_groups:
-            print("\t" + str(assignment_group))
+            out += "\t" + str(assignment_group) + "\n"
             for assignment in assignment_group.assignments:
-                print("\t\t" + str(assignment))
+                out += "\t\t" + str(assignment) + "\n"
+
+        return out
