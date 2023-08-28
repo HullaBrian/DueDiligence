@@ -24,7 +24,7 @@ def get_courses(user_id: int) -> list[Course]:
 
     viable_courses: list[Course] = []
 
-    assert canvas is not None
+    canvas = Canvas(API_URL, API_KEY)
     user = canvas.get_user(user_id)
     courses = user.get_courses()
 
