@@ -1,9 +1,8 @@
 from loguru import logger
 
-from dd.api.main import get_courses
+from dd.data.main import build_assignments
+from dd.sheets.main import export
 
-pass
 
-if __name__ == "__main__":
-    logger.info("Due Diligence is starting...")
-
+logger.info("Due Diligence is starting...")
+export(*build_assignments())

@@ -8,7 +8,10 @@ from dd.api.main import get_courses
 from dd.api.model import Course, Assignment
 
 
-def _build_assignments(courses: list[Course]) -> tuple[DataFrame, DataFrame]:
+def build_assignments(courses: list[Course] = None) -> tuple[DataFrame, DataFrame]:
+    if courses is None:
+        courses = get_courses()
+
     exams: list[str] = []
 
     assignment_ids: list[int, ...] = []  # For taking out duplicates
@@ -61,19 +64,7 @@ def _build_assignments(courses: list[Course]) -> tuple[DataFrame, DataFrame]:
     assignments_df['Due Date'] = pandas.to_datetime(assignments_df['Due Date'])
     assignments_df = assignments_df.sort_values(by="Due Date")
 
+    assignments_df['Due Date'] = assignments_df['Due Date'].dt.tz_localize(None)
+    # exams_df['Due Date'] = exams_df['Due Date'].dt.tz_localize(None)
+
     return assignments_df, exams_df
-
-
-def _build_exams():
-    pass
-
-
-def build() -> None:
-    assignments, exams = _build_assignments(get_courses())
-    print(assignments.to_markdown())
-    print("*" * 20)
-    print(exams.to_markdown())
-
-
-if __name__ == "__main__":
-    build()
