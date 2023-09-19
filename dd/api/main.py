@@ -15,14 +15,15 @@ API_URL = "https://utsa.instructure.com"
 API_KEY = get_token()
 
 
-def get_courses(user_id: int = 0) -> list[Course]:
+def get_courses(user_id: int = 0, token: str = "") -> list[Course]:
     """
     Entrypoint for api interactions
+    :param token:
     :param user_id:
     :return:
     """
     if user_id == 0:
-        user_id = get_user_id()
+        user_id = get_user_id(token)
     assert user_id > 0, "Invalid user id passed. Use dd.api.main.get_user_id() to retrieve user id"
 
     viable_courses: list[Course] = []
@@ -89,7 +90,7 @@ def _build_assignments(course: canvasapi.course.Course) -> list[Assignment]:
     return assignments
 
 
-def get_user_id() -> int:
+def get_user_id(token: str = "") -> int:
     """
     function to retrieve the user id needed to get
 
@@ -99,7 +100,7 @@ def get_user_id() -> int:
 
     payload = {}
     headers = {
-        'Authorization': f'Bearer {get_token()}',
+        'Authorization': f'Bearer {get_token() if token == "" else token}',
     }
 
     response = requests.request("GET", url, headers=headers, data=payload)
@@ -108,7 +109,7 @@ def get_user_id() -> int:
     return int(response_json[0]["enrollments"][0]["user_id"])
 
 
-if __name__ == "__main__":
-    courses = get_courses(get_user_id())
-    for course in courses:
-        print(course)
+# if __name__ == "__main__":
+#     courses = get_courses(get_user_id())
+#     for course in courses:
+#         print(course)

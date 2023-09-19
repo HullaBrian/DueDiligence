@@ -8,9 +8,9 @@ from dd.api.main import get_courses
 from dd.api.model import Course, Assignment
 
 
-def build_assignments(courses: list[Course] = None) -> tuple[DataFrame, DataFrame]:
+def build_assignments(courses: list[Course] = None, token: str = "") -> tuple[DataFrame, DataFrame]:
     if courses is None:
-        courses = get_courses()
+        courses = get_courses(token=token)
 
     exams: list[str] = []
 
