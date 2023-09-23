@@ -1,3 +1,4 @@
 .obsidian/*
 .idea/*
 dd/webapp/out/*
+.env
