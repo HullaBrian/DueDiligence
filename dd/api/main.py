@@ -24,7 +24,9 @@ def get_courses(user_id: int = 0, token: str = "") -> list[Course]:
         user_id = get_user_id(token)
     if user_id == -1:
         return []
-    assert user_id > 0, "Invalid user id passed. Use dd.api.main.get_user_id() to retrieve user id"
+    assert (
+        user_id > 0
+    ), "Invalid user id passed. Use dd.api.main.get_user_id() to retrieve user id"
 
     viable_courses: list[Course] = []
 
@@ -38,29 +40,30 @@ def get_courses(user_id: int = 0, token: str = "") -> list[Course]:
         try:
             course_rep += str(course)
         except AttributeError as e:
-            logger.error(f"A course does not have 1 or more attributes: course_code, name, or id. Exception: {e}")
+            logger.error(
+                f"A course does not have 1 or more attributes: course_code, name, or id. Exception: {e}"
+            )
             continue
 
         if not course_rep:
             continue
         logger.success(f"Found course: {course_rep}")
 
-        course.name = re.sub(r"((\w{1,}[-]){3})\w{1,} \d{4}-", "", course.name, 0)  # Normalize course name
+        course.name = re.sub(
+            r"((\w{1,}[-]){3})\w{1,} \d{4}-", "", course.name, 0
+        )  # Normalize course name
 
         assignment_groups: list[AssignmentGroup] = []
         try:
             assignment_groups = _build_assignment_groups(course)
         except Exception as e:
-            logger.error(f"Could not build assignment groups for course '{course.name}': {e}")
+            logger.error(
+                f"Could not build assignment groups for course '{course.name}': {e}"
+            )
             continue
 
         viable_courses.append(
-            Course(
-                course.course_code,
-                course.name,
-                course.id,
-                assignment_groups
-            )
+            Course(course.course_code, course.name, course.id, assignment_groups)
         )
 
     return viable_courses
@@ -71,7 +74,9 @@ def _build_assignment_groups(course: canvasapi.course.Course) -> list[Assignment
 
     built_assignment_groups: list[AssignmentGroup] = []
     for a_group in assignment_groups:
-        built_assignment_groups.append(AssignmentGroup(a_group.name, a_group.id, _build_assignments(course)))
+        built_assignment_groups.append(
+            AssignmentGroup(a_group.name, a_group.id, _build_assignments(course))
+        )
 
     return built_assignment_groups
 
@@ -86,7 +91,9 @@ def _build_assignments(course: canvasapi.course.Course) -> list[Assignment]:
                 _ = None
             assignments.append(Assignment(assignment.name, assignment.id, _))
         except AttributeError as e:
-            logger.info(f"Assignment '{assignment}' for course '{course.name}' doesn't have a required attribute! {e}")
+            logger.info(
+                f"Assignment '{assignment}' for course '{course.name}' doesn't have a required attribute! {e}"
+            )
     return assignments
 
 
@@ -102,7 +109,7 @@ def get_user_id(token: str = "") -> int:
 
     payload = {}
     headers = {
-        'Authorization': f'Bearer {token}',
+        "Authorization": f"Bearer {token}",
     }
 
     response = requests.request("GET", url, headers=headers, data=payload)

@@ -18,8 +18,7 @@ def index():
     token = str(escape(request.args.get("token", "")))
 
     if token:
-        logger.info(f"Starting generation for token '{token}'")
-        return redirect(url_for("wait", token=token))
+        return redirect(url_for("generate", token=token))
 
     return (
             """
@@ -36,19 +35,24 @@ def index():
 
 
 @app.route("/loading/<token>")
-def wait(token: str):
+def generate(token: str):
     id = uuid4()
-    export(*build_assignments(token=token), file_name=os.path.join(project_directory, "out", f"{id}.xlsx"))
+    logger.info(f"Starting generation for token '{token}' with uuid '{id}'")
+    export(
+        *build_assignments(token=token),
+        file_name=os.path.join(project_directory, "out", f"{id}.xlsx"),
+    )
     return redirect(url_for("get_file", uuid=id))
 
 
 @app.route("/completed/<uuid>")
 def get_file(uuid: str):
     """Download a file."""
+
+    uuid = str(escape(uuid)).replace("/", "").replace("\\", "").replace(".", "")
+
     return send_from_directory(
-        os.path.join(project_directory, "out"),
-        f"{uuid}.xlsx",
-        as_attachment=True
+        os.path.join(project_directory, "out"), f"{uuid}.xlsx", as_attachment=True
     )
 
 

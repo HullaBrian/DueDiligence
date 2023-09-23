@@ -2,7 +2,9 @@ import pandas as pd
 from loguru import logger
 
 
-def export(assignments: pd.DataFrame, exams: pd.DataFrame, file_name: str = "ERROR.xlsx") -> str:
+def export(
+    assignments: pd.DataFrame, exams: pd.DataFrame, file_name: str = "ERROR.xlsx"
+) -> str:
     if assignments.empty and exams.empty:
         logger.error("Could not export data - no assignments or exams were passed!")
         return ""
