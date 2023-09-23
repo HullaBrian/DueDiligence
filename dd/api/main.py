@@ -9,10 +9,8 @@ from loguru import logger
 from dd.api.model import Course
 from dd.api.model import AssignmentGroup
 from dd.api.model import Assignment
-from dd.environment import get_token
 
 API_URL = "https://utsa.instructure.com"
-API_KEY = get_token()
 
 
 def get_courses(user_id: int = 0, token: str = "") -> list[Course]:
@@ -100,9 +98,11 @@ def get_user_id(token: str = "") -> int:
     """
     url = f"{API_URL}/api/v1/courses"
 
+    assert token != ""
+
     payload = {}
     headers = {
-        'Authorization': f'Bearer {get_token() if token == "" else token}',
+        'Authorization': f'Bearer {token}',
     }
 
     response = requests.request("GET", url, headers=headers, data=payload)

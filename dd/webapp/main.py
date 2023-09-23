@@ -1,6 +1,8 @@
+import os
+
 from uuid import uuid4
 
-from flask import Flask, redirect, url_for, send_from_directory, jsonify
+from flask import Flask, redirect, url_for, send_from_directory
 from flask import request, escape
 from loguru import logger
 
@@ -8,6 +10,7 @@ from dd.data.main import build_assignments
 from dd.sheets.main import export
 
 app = Flask(__name__)
+project_directory: str = f"{os.sep}".join(os.path.realpath(__file__).split(os.sep)[:-1])
 
 
 @app.route("/")
@@ -35,7 +38,7 @@ def index():
 @app.route("/loading/<token>")
 def wait(token: str):
     id = uuid4()
-    export(*build_assignments(token=token), file_name=f"out/{id}.xlsx")
+    export(*build_assignments(token=token), file_name=os.path.join(project_directory, "out", f"{id}.xlsx"))
     return redirect(url_for("get_file", uuid=id))
 
 
@@ -43,7 +46,7 @@ def wait(token: str):
 def get_file(uuid: str):
     """Download a file."""
     return send_from_directory(
-        "/home/school/Documents/Programming/DueDiligence/dd/webapp/out",
+        os.path.join(project_directory, "out"),
         f"{uuid}.xlsx",
         as_attachment=True
     )
