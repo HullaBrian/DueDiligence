@@ -24,11 +24,13 @@ def get_courses(user_id: int = 0, token: str = "") -> list[Course]:
     """
     if user_id == 0:
         user_id = get_user_id(token)
+    if user_id == -1:
+        return []
     assert user_id > 0, "Invalid user id passed. Use dd.api.main.get_user_id() to retrieve user id"
 
     viable_courses: list[Course] = []
 
-    canvas = Canvas(API_URL, API_KEY)
+    canvas = Canvas(API_URL, token)
     user = canvas.get_user(user_id)
     courses = user.get_courses()
 
@@ -106,10 +108,8 @@ def get_user_id(token: str = "") -> int:
     response = requests.request("GET", url, headers=headers, data=payload)
     response_json = json.loads(response.text)
 
-    return int(response_json[0]["enrollments"][0]["user_id"])
-
-
-# if __name__ == "__main__":
-#     courses = get_courses(get_user_id())
-#     for course in courses:
-#         print(course)
+    try:
+        return int(response_json[0]["enrollments"][0]["user_id"])
+    except KeyError:
+        logger.error("Could not retrieve user id!")
+        return -1

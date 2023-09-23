@@ -11,6 +11,8 @@ from dd.api.model import Course, Assignment
 def build_assignments(courses: list[Course] = None, token: str = "") -> tuple[DataFrame, DataFrame]:
     if courses is None:
         courses = get_courses(token=token)
+        if courses is []:
+            return (None, None)
 
     exams: list[str] = []
 
