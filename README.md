@@ -4,6 +4,8 @@
 DueDiligence is a web application written entirely in Python meant to retrieve all assignments from UTSA's canvas and
 put them into a spreadsheet that is sorted by due date and easy to read.
 
+Future development is unlikely, but feel free to submit pull requests or ask for a feature to be implemented!
+
 ## Dependencies
 | Dependency                                       | Version |
 |--------------------------------------------------|---------|
